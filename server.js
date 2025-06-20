@@ -48,18 +48,19 @@ app.post('/api/send-message', async (req, res) => {
 
   // Email content
   const mailOptions = {
-    from: process.env.EMAIL_USER, // Sender: your Gmail account
-    to: 'adganesh19@gmail.com', // Recipient: your target email
-    subject: `New Message from Portfolio: ${name}`,
-    text: `You have received a new message from your portfolio website:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-    html: `
-      <p>You have received a new message from your portfolio website:</p>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Message:</strong></p>
-      <p>${message.replace(/\n/g, '<br>')}</p>
-    `
-  };
+  from: process.env.EMAIL_USER, // Your Gmail address for sending
+  to: process.env.EMAIL_USER,    // Send the email to yourself
+  replyTo: email,              // Set the reply-to address to the user's email
+  subject: `New Message from Portfolio: ${name}`,
+  text: `You have received a new message from your portfolio website:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+  html: `
+    <p>You have received a new message from your portfolio website:</p>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message.replace(/\n/g, '<br>')}</p>
+  `
+};
 
   try {
     await transporter.sendMail(mailOptions);
